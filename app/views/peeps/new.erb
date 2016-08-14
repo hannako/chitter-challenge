@@ -1,0 +1,14 @@
+<% if current_user %>
+
+  <form action = '/peeps/index' method = 'post'>
+    <label for 'peep'>
+      <input type = 'text' name = 'content' value = 'Your peep' />
+      <input type = 'submit' value = 'peep' />
+    </label>
+  </form>
+
+  <%else%>
+
+  Please log in to peep
+
+<%end%>

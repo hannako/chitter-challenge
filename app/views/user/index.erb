@@ -9,14 +9,19 @@
 <br /><br />
 <br /><br />
 
-<h2>Already registered?</h2>
-<% if flash[:errors]%>
-Please see the below errors:
-<ul id="errors">
-  <% flash[:errors].each do |error| %>
-    <li><%= error %></li>
+<form action = '/peeps/new' method = 'get'>
+    <input type = 'submit' value = 'peep' />
+</form>
+
+Peeps:
+
+  <% @peeps.each do |peep| %>
+  @ <%= peep.user.username %> : <%= peep.content %>
   <% end %>
-<% end %>
+
+
+
+<h2>Already registered?</h2>
 <form name = 'sign in' action ='/sessions' method = 'post'>
   <label for = 'email'>
     Email:<input name = 'email' type = 'email'><br /><br />

@@ -2,14 +2,31 @@
 <html>
 
   <head>
-    <title>chitter</title>
+    <title>Chitter</title>
   </head>
 
+  <% if current_user %>
+  Hi <%= current_user.first_name %>!
+
   <body>
-    <form action = '/sessions' method = 'post'>
-      <label for 'sign out'>
-        <input type = 'submit' value = 'sign me out'>
-    </form>
+    <form action="/sessions" method="post">
+     <input type="hidden" name="_method" value="delete" />
+     <input type="submit" value="sign me out" />
+   </form>
+   <% end %>
+   <br />
+       <br />
+           <br />
+
+    <% if flash[:errors] && !flash[:errors].empty? %>
+      Please refer to the following errors below:
+      <ul id='errors'>
+        <% flash[:errors].each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
 
     <%=yield%>
   </body>

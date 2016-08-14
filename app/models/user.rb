@@ -11,7 +11,8 @@ class User
   property :email, String, format: :email_address, required: true, unique: true
   property :password_digest, Text
 
-
+  has n, :peeps, through: Resource
+  
   attr_accessor :password_confirmation
   attr_reader :password
   validates_confirmation_of :password

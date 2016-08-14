@@ -5,6 +5,7 @@ require 'sinatra/flash'
 
 require_relative 'data_mapper_setup.rb'
 require_relative 'models/user.rb'
+require_relative 'models/peep.rb'
 
 class Chitter < Sinatra::Base
 
@@ -13,11 +14,11 @@ class Chitter < Sinatra::Base
   register Sinatra::Flash
 
   get '/' do
-    erb :'index'
     redirect '/user/index'
   end
 
   get '/user/index' do
+    @peeps = Peep.all
     erb :'user/index'
   end
 
@@ -33,23 +34,42 @@ class Chitter < Sinatra::Base
       password: params[:password],
       password_confirmation: params[:password_confirmation])
       session[:user_id] = user.id
-      redirect '/peeps/index'
+      redirect '/user/index'
   end
 
-  get '/peeps/index' do
-    erb :'peeps/index'
-    #peeps/index is the links homepage
+
+  delete '/sessions' do
+    session[:user_id] = nil
+    redirect '/user/index'
   end
 
   post '/sessions' do
     user = User.authenticate(params[:email], params[:password])
     if user
      session[:user_id] = user.id
-     redirect '/peeps/index'
+     redirect '/user/index'
     else
       flash.now[:errors] = ["Incorrect password entered. Please retry."]
       erb :'user/index'
     end
+  end
+
+
+  get '/peeps/new' do
+    erb :'peeps/new'
+
+  end
+
+  post '/peeps/index'do
+    user = User.first(id: session[:user_id])
+      if user
+      peep = Peep.new(content: params[:content])
+      peep.user = user
+      user.save
+      peep.save
+      redirect '/user/index'
+      else
+      end
   end
 
   helpers do

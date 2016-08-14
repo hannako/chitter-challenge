@@ -16,6 +16,7 @@ feature 'Logging out' do
     click_button 'sign in'
     click_button 'sign me out'
     expect(page).not_to have_content('Hi first name')
+    expect(page).not_to have_content('sign out')
   end
 
 
